@@ -1,0 +1,73 @@
+{
+  "name": "inferno-desktop",
+  "version": "0.0.2",
+  "description": "Build desktop distrobutions for Inferno.",
+  "main": "main.js",
+  "author": "Intuit",
+  "license": "MIT",
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.intuit.com/Fuego-Tools/inferno-desktop.git"
+  },
+  "scripts": {
+    "electron": "electron --inspect=5858",
+    "package": "electron-packager . inferno --all --ignore='(target|.idea)' --out=target/release-builds",
+    "package:clean": "yarn package --overwrite",
+    "assemble": "cp -r target/inferno/dist/ sources && cp main.js sources/ && cp -r target/inferno-service-*/ sources/inferno-service",
+    "pack": "electron-builder --dir",
+    "dist": "DEBUG='electron-builder' DEBUG_DMG=true node node_modules/.bin/build",
+    "dist:win": "DEBUG='electron-builder' node node_modules/.bin/build "
+  },
+  "build": {
+    "appId": "com.intuit.fuego.inferno",
+    "productName": "Inferno",
+    "mac": {
+      "category": "public.app-category.business",
+      "target": [
+        "dmg"
+      ]
+    },
+    "extraResources": [
+      "sources/inferno-service/**"
+    ],
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "ia32"
+          ]
+        }
+      ]
+    }
+  },
+  "devDependencies": {
+    "electron": "^1.7.9",
+    "electron-builder": "^19.45.4",
+    "electron-is-dev": "^0.3.0",
+    "electron-packager": "^9.1.0"
+  },
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "electron-log": "^2.2.11",
+    "electron-settings": "^3.1.4",
+    "electron-updater": "^2.16.1",
+    "jquery": "^3.2.1",
+    "lodash": "^4.17.4",
+    "node-fetch": "^1.7.3"
+  }
+}

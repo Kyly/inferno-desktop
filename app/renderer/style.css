@@ -1,0 +1,62 @@
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+}
+
+main {
+    padding-bottom: 1.5em;
+}
+
+.footer {
+    color: whitesmoke;
+    z-index: 9999;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 1.5em;
+    line-height: 1.5em; /* Vertically center the text there */
+    background-color: black;
+}
+
+.footer .service-running-indicator-container {
+    cursor: pointer;
+}
+
+.footer .service-running-indicator-container > .service-running-indicator-text:hover,
+.footer .service-running-indicator-container > .service-running-indicator-text:active {
+    color: #fff;
+}
+
+.footer .service-running-indicator-container > .service-running-indicator {
+    color: #d9534f;
+}
+
+.footer .service-running-indicator-container > .service-running-indicator.running {
+    color: #5cb85c;
+}
+
+/* Custom page CSS
+-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+
+body > .container-fluid {
+    padding: 60px 15px 0;
+}
+
+.footer > .container-fluid {
+    font-size: .8em;
+    padding-right: 1em;
+    padding-left: 1em;
+}
+
+code {
+    font-size: 80%;
+}
