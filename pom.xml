@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.intuit.fuego.inferno</groupId>
+    <groupId>com.intuit.fuego.tools.inferno</groupId>
     <artifactId>inferno-desktop</artifactId>
-    <version>0.0.1-alpha.1-SNAPSHOT</version>
+    <version>0.0.1-alpha.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -124,7 +124,7 @@
                         <configuration>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>com.intuit.fuego.inferno</groupId>
+                                    <groupId>com.intuit.fuego.tools.inferno</groupId>
                                     <artifactId>inferno-service</artifactId>
                                     <version>${infernoService.version}</version>
                                     <classifier>bin</classifier>
@@ -136,8 +136,8 @@
                                     </includes>
                                 </artifactItem>
                                 <artifactItem>
-                                    <groupId>com.intuit.ctg.fuego-tools</groupId>
-                                    <artifactId>inferno</artifactId>
+                                    <groupId>com.intuit.fuego.tools.inferno</groupId>
+                                    <artifactId>inferno-client</artifactId>
                                     <version>${inferno.version}</version>
                                     <type>zip</type>
                                     <overWrite>false</overWrite>
