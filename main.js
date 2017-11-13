@@ -1,33 +1,52 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
-const { flow } = require('lodash');
+const { app, BrowserWindow, ipcMain, Menu } = require('electron');
+const isDev = require('electron-is-dev');
 const settings = require('electron-settings');
 const autoUpdater = require('electron-updater').autoUpdater;
-const startService = require('./app/main/startService');
+const InfernoService = require('./app/main/service/InfernoService');
+const ServiceConfiguration = require('./app/main/service/ServiceConfiguration');
 const path = require('path');
 const url = require('url');
-const fetch = require('node-fetch');
+
 autoUpdater.logger = require('electron-log');
 autoUpdater.logger.transports.file.level = 'info';
 
-let win;
+let mainWindow;
+let service;
 
-app.on('ready', flow([startService(), createWindow]));
+app.on('ready', () => {
 
-app.on('window-all-closed', () => {
+    mainWindow = createWindow();
 
-    const shutdownRequest = fetch('http://localhost:8080/shutdown', { method: 'POST' });
-
-    if ( process.platform !== 'darwin' ) {
-        shutdownRequest.then(app.quit)
-            .catch(app.quit);
-
+    // Needed to allow copy paste on mac
+    if ( process.platform === 'darwin' ) {
+        createMenu();
     }
+
+    ServiceConfiguration.create({ isDev, settings })
+        .then(InfernoService.start)
+        .then(instance => {
+            service = instance;
+            mainWindow.webContents.on('did-finish-load', () => {
+                mainWindow.webContents.send('serviceInfo.schemaPath', { path: service.configuration.schemaPath });
+            });
+        });
+
 
 });
 
+app.on('window-all-closed', () => {
+    if ( process.platform !== 'darwin' ) {
+        app.quit();
+    }
+});
+
+app.on('quit', () => {
+    service.stop();
+});
+
 app.on('activate', () => {
-    if ( win === null ) {
-        createWindow();
+    if ( mainWindow === null ) {
+        mainWindow = createWindow();
     }
 });
 
@@ -39,17 +58,13 @@ ipcMain.on('setSchemaPath', async (event, opts) => {
     let response;
 
     try {
-        response = await fetch('http://localhost:8080/data-model', {
-            method: 'POST',
-            body: JSON.stringify({ path: resolvedPath }),
-            headers: { 'Content-Type': 'application/json'}
-        });
+        response = await service.setSchemaPath(resolvedPath);
     } catch (error) {
         event.sender.send('setSchemaPath.failure', { path: resolvedPath, reason: error.message });
         return;
     }
 
-    if (!response.ok) {
+    if ( !response.ok ) {
         event.sender.send('setSchemaPath.failure', { path: resolvedPath, reason: response.statusText });
         return;
     }
@@ -61,7 +76,7 @@ ipcMain.on('setSchemaPath', async (event, opts) => {
 
 function createWindow() {
 
-    win = new BrowserWindow({ width: 1200, height: 1000 });
+    let win = new BrowserWindow({ width: 1200, height: 1000 });
 
     win.loadURL(url.format({
         pathname: path.join(__dirname, '/app/renderer/index.html'),
@@ -80,5 +95,77 @@ function createWindow() {
         popup.loadURL(url);
         event.newGuest = popup;
     });
+
+    return win;
+
+}
+
+function createMenu() {
+
+    const application = {
+        label: 'Application',
+        submenu: [
+            {
+                label: 'About Application',
+                selector: 'orderFrontStandardAboutPanel:'
+            },
+            {
+                type: 'separator'
+            },
+            {
+                label: 'Quit',
+                accelerator: 'Command+Q',
+                click: () => {
+                    app.quit();
+                }
+            }
+        ]
+    };
+
+    const edit = {
+        label: 'Edit',
+        submenu: [
+            {
+                label: 'Undo',
+                accelerator: 'CmdOrCtrl+Z',
+                selector: 'undo:'
+            },
+            {
+                label: 'Redo',
+                accelerator: 'Shift+CmdOrCtrl+Z',
+                selector: 'redo:'
+            },
+            {
+                type: 'separator'
+            },
+            {
+                label: 'Cut',
+                accelerator: 'CmdOrCtrl+X',
+                selector: 'cut:'
+            },
+            {
+                label: 'Copy',
+                accelerator: 'CmdOrCtrl+C',
+                selector: 'copy:'
+            },
+            {
+                label: 'Paste',
+                accelerator: 'CmdOrCtrl+V',
+                selector: 'paste:'
+            },
+            {
+                label: 'Select All',
+                accelerator: 'CmdOrCtrl+A',
+                selector: 'selectAll:'
+            }
+        ]
+    };
+
+    const template = [
+        application,
+        edit
+    ];
+
+    Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 
 }

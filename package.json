@@ -1,26 +1,33 @@
 {
   "name": "inferno-desktop",
-  "version": "0.0.2",
+  "version": "0.0.1-beta.1",
   "description": "Build desktop distrobutions for Inferno.",
   "main": "main.js",
   "author": "Intuit",
   "license": "MIT",
-  "repository" : {
-    "type" : "git",
-    "url" : "https://github.intuit.com/Fuego-Tools/inferno-desktop.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.intuit.com/Fuego-Tools/inferno-desktop.git"
   },
   "scripts": {
-    "electron": "electron --inspect=5858",
-    "package": "electron-packager . inferno --all --ignore='(target|.idea)' --out=target/release-builds",
-    "package:clean": "yarn package --overwrite",
-    "assemble": "cp -r target/inferno/dist/ sources && cp main.js sources/ && cp -r target/inferno-service-*/ sources/inferno-service",
+    "start": "electron main",
+    "assemble": "cp -r target/inferno-service-*/ target/inferno-service && mv target/inferno-service/config/application.desktop-sample.yml target/inferno-service/config/application.yml",
     "pack": "electron-builder --dir",
-    "dist": "DEBUG='electron-builder' DEBUG_DMG=true node node_modules/.bin/build",
-    "dist:win": "DEBUG='electron-builder' node node_modules/.bin/build "
+    "dist": "DEBUG='electron-builder' DEBUG_DMG=true node node_modules/.bin/build -mw",
+    "release": "DEBUG='electron-builder' DEBUG_DMG=true node node_modules/.bin/build -mw -p always",
+    "postinstall": "mvn generate-resources && yarn assemble"
   },
   "build": {
     "appId": "com.intuit.fuego.inferno",
     "productName": "Inferno",
+    "publish": {
+      "provider": "github",
+      "owner": "Fuego-Tools",
+      "repo": "inferno-desktop",
+      "private": false,
+      "host": "github.intuit.com",
+      "releaseType": "draft"
+    },
     "mac": {
       "category": "public.app-category.business",
       "target": [
@@ -28,7 +35,7 @@
       ]
     },
     "extraResources": [
-      "sources/inferno-service/**"
+      "target/inferno-service/**"
     ],
     "dmg": {
       "contents": [
@@ -67,6 +74,7 @@
     "electron-settings": "^3.1.4",
     "electron-updater": "^2.16.1",
     "jquery": "^3.2.1",
+    "js-yaml": "^3.10.0",
     "lodash": "^4.17.4",
     "node-fetch": "^1.7.3"
   }

@@ -22,9 +22,9 @@
     "7zip-bin-mac" "^1.0.1"
     "7zip-bin-win" "^2.1.1"
 
-"@types/node@^8.0.24":
-  version "8.0.51"
-  resolved "https://registry.npmjs.intuit.net/@/@types/node/_attachments/node-8.0.51.tgz#b31d716fb8d58eeb95c068a039b9b6292817d5fb"
+"@types/node@^7.0.18":
+  version "7.0.46"
+  resolved "https://registry.npmjs.intuit.net/@/@types/node/_attachments/node-7.0.46.tgz#c3dedd25558c676b3d6303e51799abb9c3f8f314"
 
 abbrev@1:
   version "1.1.1"
@@ -665,10 +665,10 @@ electron-updater@^2.16.1:
     source-map-support "^0.5.0"
 
 electron@^1.7.9:
-  version "1.8.1"
-  resolved "https://registry.npmjs.intuit.net/e/electron/_attachments/electron-1.8.1.tgz#19b6f39f2013e204a91a60bc3086dc7a4a07ed88"
+  version "1.7.9"
+  resolved "https://registry.npmjs.intuit.net/e/electron/_attachments/electron-1.7.9.tgz#add54e9f8f83ed02f6519ec10135f698b19336cf"
   dependencies:
-    "@types/node" "^8.0.24"
+    "@types/node" "^7.0.18"
     electron-download "^3.0.1"
     extract-zip "^1.0.3"
 

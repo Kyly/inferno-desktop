@@ -9,14 +9,14 @@
 <body>
 
 <!-- Injects app and creates main tag -->
-<script type="text/javascript" src="../../sources/bundle.js"></script>
+<script type="text/javascript" src="../../target/inferno/dist/bundle.js"></script>
 
 <footer class="footer">
     <div class="container-fluid">
-        <div class="service-running-indicator-container" data-toggle="modal"
-             data-target=".change-schema-location-modal">
+        <div class="service-running-indicator-container">
             <span class="service-running-indicator">&#9673;</span>
             <span class="service-running-indicator-text text-muted"></span>
+            <span class="service-info-text text-muted"></span>
         </div>
     </div>
 </footer>
@@ -43,7 +43,6 @@
     </div>
 </div>
 
-<script type="text/javascript" src="footer.js"></script>
 <script>if ( typeof module === 'object' ) {
     window.module = module;
     module = undefined;
@@ -51,6 +50,8 @@
 <script type="text/javascript" src="../../node_modules/jquery/dist/jquery.min.js"></script>
 <script type="text/javascript" src="../../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 <script>if ( window.module ) module = window.module;</script>
-<script type="text/javascript" src="../main/setSchemaLocation.js"></script>
+<script type="text/javascript" src="footer.js"></script>
+<script type="text/javascript" src="setSchemaLocation.js"></script>
+
 </body>
 </html>

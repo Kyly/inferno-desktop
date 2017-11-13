@@ -6,9 +6,12 @@
 
     <groupId>com.intuit.fuego.inferno</groupId>
     <artifactId>inferno-desktop</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.1-alpha.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
     <properties>
+        <infernoService.version>2.0.0-alpha.1-SNAPSHOT</infernoService.version>
+        <inferno.version>2.0.0-alpha.1-SNAPSHOT</inferno.version>
     </properties>
 
     <build>
@@ -32,39 +35,38 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>yarn prune --production</id>
-                        <phase>prepare-package</phase>
+                        <id>yarn dist</id>
+                        <phase>compile</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>
                         <configuration>
                             <executable>yarn</executable>
                             <arguments>
-                                <argument>install</argument>
-                                <argument>--production</argument>
+                                <argument>dist</argument>
                             </arguments>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
-            <!--<plugin>-->
-                <!--<artifactId>maven-assembly-plugin</artifactId>-->
-                <!--<configuration>-->
-                    <!--<appendAssemblyId>false</appendAssemblyId>-->
-                    <!--<descriptors>-->
-                        <!--<descriptor>assembly.xml</descriptor>-->
-                    <!--</descriptors>-->
-                <!--</configuration>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<id>make-assembly</id>-->
-                        <!--<phase>package</phase>-->
-                        <!--<goals>-->
-                            <!--<goal>single</goal>-->
-                        <!--</goals>-->
-                    <!--</execution>-->
-                <!--</executions>-->
-            <!--</plugin>-->
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <descriptors>
+                        <descriptor>assembly.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <!-- Print real version of build (snapshot timestamp or release version).
                Jenkins parses this output from log & displays in build description -->
             <plugin>
@@ -91,13 +93,31 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>dist</directory>
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>
+                        <fileset>
+                            <directory>node_modules</directory>
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>
                         <id>unzip</id>
-                        <phase>package</phase>
+                        <phase>generate-resources</phase>
                         <goals>
                             <goal>unpack</goal>
                         </goals>
@@ -106,19 +126,21 @@
                                 <artifactItem>
                                     <groupId>com.intuit.fuego.inferno</groupId>
                                     <artifactId>inferno-service</artifactId>
-                                    <version>0.0.3-SNAPSHOT</version>
+                                    <version>${infernoService.version}</version>
                                     <classifier>bin</classifier>
                                     <type>zip</type>
-                                    <overWrite>true</overWrite>
+                                    <overWrite>false</overWrite>
                                     <outputDirectory>${project.build.directory}</outputDirectory>
-                                    <includes>**/inferno-service.jar,**/application.yml,**/SAMPLE-Return1040.xsd</includes>
+                                    <includes>
+                                        **/inferno-service.jar,**/application.desktop-sample.yml,**/SAMPLE-Return1040.xsd
+                                    </includes>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>com.intuit.ctg.fuego-tools</groupId>
                                     <artifactId>inferno</artifactId>
-                                    <version>1.0.1-SNAPSHOT</version>
+                                    <version>${inferno.version}</version>
                                     <type>zip</type>
-                                    <overWrite>true</overWrite>
+                                    <overWrite>false</overWrite>
                                     <outputDirectory>${project.build.directory}/inferno</outputDirectory>
                                     <includes>dist/**</includes>
                                 </artifactItem>
@@ -169,5 +191,4 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
-
 </project>
