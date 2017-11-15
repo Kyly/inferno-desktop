@@ -4,10 +4,6 @@
     const $modal = jQuery('.change-schema-location-modal');
     const form = document.getElementById("schemaPathForm");
 
-    $modal.on('hidden.bs.modal', e => {
-        console.log(e);
-    });
-
     form.addEventListener('submit', (event) => {
 
         event.preventDefault();
