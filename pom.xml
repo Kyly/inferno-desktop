@@ -11,7 +11,7 @@
 
     <properties>
         <infernoService.version>2.0.0-alpha.1-SNAPSHOT</infernoService.version>
-        <inferno.version>2.0.0-alpha.1-SNAPSHOT</inferno.version>
+        <inferno.version>2.0.0-alpha.2-SNAPSHOT</inferno.version>
     </properties>
 
     <build>
