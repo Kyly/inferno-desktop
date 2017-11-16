@@ -1,6 +1,6 @@
 {
   "name": "inferno-desktop",
-  "version": "0.0.1-alpha.2",
+  "version": "0.0.1-alpha.3",
   "description": "Build desktop distrobutions for Inferno.",
   "main": "main.js",
   "author": "Intuit",
