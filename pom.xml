@@ -6,12 +6,12 @@
 
     <groupId>com.intuit.fuego.tools.inferno</groupId>
     <artifactId>inferno-desktop</artifactId>
-    <version>0.0.1-alpha.2-SNAPSHOT</version>
+    <version>0.0.1-alpha.3</version>
     <packaging>pom</packaging>
 
     <properties>
-        <infernoService.version>2.0.0-alpha.1-SNAPSHOT</infernoService.version>
-        <inferno.version>2.0.0-alpha.2-SNAPSHOT</inferno.version>
+        <infernoService.version>2.0.0-alpha.1</infernoService.version>
+        <inferno.version>2.0.0-alpha.2</inferno.version>
     </properties>
 
     <build>
